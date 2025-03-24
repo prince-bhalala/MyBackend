@@ -1,4 +1,4 @@
-import {v2 as cloudinary} from 'cloudinary-core';
+import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
 
 
@@ -17,7 +17,8 @@ const uplodOnCloudinary = async (localFilePath) => {
             resource_type : "auto",
         })
         //file has been uploded successfully
-        console.log("File Is Uploded On Cloudinary : ",reponse.url);
+        //console.log("File Is Uploded On Cloudinary : ",reponse.url);
+        fs.unlinkSync(localFilePath);
         return reponse ;
     } catch (error) {
         fs.unlinkSync(localFilePath); // remoce the localy saved temp file as the uploded got failed
