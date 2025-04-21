@@ -85,9 +85,9 @@ const registerUser = asyncHandler( async (req , res) => {
         throw new ApiError(500,"Somthing Went wrong while registring a user")
     }
 
-    return res.status(201).json(
-        new ApiResponse(200,createdUser ,"User REgisterd Successfully ")
-    )
+    return res
+    .status(201)
+    .json(new ApiResponse(200,createdUser ,"User Registred Successfully "))
 
 })
 
@@ -147,7 +147,8 @@ const loginUser = asyncHandler( async (req , res) => {
 const logoutUser = asyncHandler(async(req,res) => {
     User.findByIdAndUpdate(
         req.user._id,{
-            $set : {refreshToken : undefined}
+            $unset : {refreshToken : 1}
+            
         },
         {
             new : true
@@ -238,7 +239,7 @@ const updateAccountDetails = asyncHandler( async(req,res) => {
         throw new ApiError(400,"All fileds are required")
     }
 
-    const user = User.findByIdAndUpdate(
+    const user = await User.findByIdAndUpdate(
         req.user?._id,
     {
         $set : {
