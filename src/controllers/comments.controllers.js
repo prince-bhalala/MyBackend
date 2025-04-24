@@ -12,6 +12,7 @@ const addComment = asyncHandler( async (req,res) => {
     if (!content) {
         throw new ApiError(400 , "Comment contengt is must be required")
     }
+    
 
     const comment = await Comment.create(
         {
