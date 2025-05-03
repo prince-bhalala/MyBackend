@@ -1,7 +1,7 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.models.js"
-import {uplodOnCloudinary} from "../utils/cloudinary.js"
+import {uplodOnCloudinary,deleteFromCloudinary} from "../utils/cloudinary.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
@@ -72,8 +72,14 @@ const registerUser = asyncHandler( async (req , res) => {
 
     const user = await User.create({
         fullname,
-        avatar : avatar.url,
-        coverImage : coverImage?.url || "",
+        avatar :    {
+                        url : avatar.url ,
+                        public_id :  avatar.public_id
+                    },
+        coverImage :    {
+                        url : coverImage?.url || "" ,
+                        public_id :  coverImage?.public_id || ""
+                    },
         email,
         password,
         username : username.toLowerCase()
@@ -264,6 +270,8 @@ const updateUserAvatar = asyncHandler( async (req,res) => {
         new ApiError(400,"Avatar file ismissing")
     }
 
+    const deltedAvatar = await deleteFromCloudinary(req.user.avatar.public_id)
+
     const avatar = await uplodOnCloudinary(avatarLocalPath)
 
     if (!avatar.url) {
@@ -273,7 +281,10 @@ const updateUserAvatar = asyncHandler( async (req,res) => {
     const user = await User.findByIdAndUpdate(req.user?._id,
         {
             $set : {
-                avatar : avatar.url
+                avatar: {   
+                            url : avatar.url,
+                            public_id : avatar.public_id
+                        }
             }
         },
         {new : true}
@@ -301,7 +312,10 @@ const updateUserCoverImage = asyncHandler( async (req,res) => {
     const user = await User.findByIdAndUpdate(req.user?._id,
         {
             $set : {
-                coverImage : coverImage.url
+                coverImage : {  
+                                url : coverImage.url,
+                                public_id : coverImage.public_id
+                            }
             }
         },
         {new : true}

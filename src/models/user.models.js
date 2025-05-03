@@ -27,11 +27,17 @@ const userSchema = new Schema(
             index : true
         },
         avatar : {
-            type : String, // cloudniary url
+            type : {
+                url : { type : String , required : true},
+                public_id : { type : String , required : true}
+                }, // cloudniary url and public id
             required : true,
         },
         coverImage : {
-            type : String, // cloudniary url
+            type : {
+                url : { type : String , required : true},
+                public_id : { type : String , required : true}
+            } // cloudniary url and public id
         },
         wathchHistory : [
             {

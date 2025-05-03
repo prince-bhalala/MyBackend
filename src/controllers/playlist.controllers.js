@@ -176,5 +176,10 @@ const updatePlaylist = asyncHandler( async (req,res) => {
 })
 
 export {createPlaylist,
-        getUserPlaylists
+        getUserPlaylists,
+        getPlaylistById,
+        addVideoToPlaylist,
+        removeVideoFromPlaylist,
+        deletePlaylist,
+        updatePlaylist
 }
