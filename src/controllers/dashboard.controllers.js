@@ -7,7 +7,7 @@ import { User } from "../models/user.models.js";
 import { Subscription } from "../models/subscription.models.js";
 import mongoose from "mongoose";
 
-const getChannelStatus = asyncHandler(async (req, res) => {
+const getChannelStats = asyncHandler(async (req, res) => {
     const { channelId } = req.params;
 
     const existChannel = await User.findById(channelId);
@@ -94,6 +94,6 @@ const getChannelVideos = asyncHandler( async (req,res) => {
     .json(new ApiResponse(200,video,"All Video fetched Successfully"))
 })
 
-export {    getChannelStatus,
+export {    getChannelStats,
             getChannelVideos
 }
